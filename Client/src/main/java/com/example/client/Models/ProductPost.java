@@ -13,13 +13,24 @@ public class ProductPost {
     public String expiration_date;
     @SerializedName("description")
     public String description;
+    @SerializedName("defect")
+    public String defect;
 
-    public ProductPost(String name, int amount, String date_of_create, String expiration_date, String description) {
+    public ProductPost(String name, int amount, String date_of_create, String expiration_date, String description, String defect) {
         this.name = name;
         this.amount = amount;
         this.date_of_create = date_of_create;
         this.expiration_date = expiration_date;
         this.description = description;
+        this.defect = defect;
+    }
+
+    public String getDefect() {
+        return defect;
+    }
+
+    public void setDefect(String defect) {
+        this.defect = defect;
     }
 
     public String getName() {

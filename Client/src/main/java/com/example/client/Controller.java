@@ -81,9 +81,12 @@ public class Controller {
     private Button Update;
 
     @FXML
+    private TextField defect;
+
+    @FXML
     void btnAddClick(ActionEvent event) throws Exception {
         ProductPost product = new ProductPost(name.getText(),Integer.valueOf(amount.getText()),
-                firstDate.getText(),secondDate.getText(),decription.getText());
+                firstDate.getText(),secondDate.getText(),decription.getText(), defect.getText());
         SendPost(product);
     }
 

@@ -50,6 +50,11 @@
                   <Insets right="5.0" top="20.0" />
                </HBox.margin>
             </TextField>
+            <TextField fx:id="defect" text="Дефект">
+               <HBox.margin>
+                  <Insets right="5.0" top="20.0" />
+               </HBox.margin>
+            </TextField>
          </children>
       </HBox>
       <HBox prefHeight="70.0" prefWidth="858.0">
