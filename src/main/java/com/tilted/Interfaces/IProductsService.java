@@ -9,6 +9,6 @@ public interface IProductsService {
     ProductDTO Create(ProductDTO product);
     List<ProductDTO> GetAll();
     ProductDTO GetById(int id);
-    void Update(ProductDTO user);
+    void Update(ProductDTO product);
     boolean DeleteById(int id);
 }
