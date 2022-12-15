@@ -27,6 +27,7 @@ public class UsersController {
     public List<UserDTO> getAllUsers() {
         return userService.GetAll();
     }
+
     @PostMapping("/check")
     public ResponseEntity<?> getUserById(@Valid @RequestBody String login) {
         boolean response = userService.GetById(login);

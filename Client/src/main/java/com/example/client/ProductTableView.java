@@ -4,28 +4,30 @@ import com.example.client.Models.Product;
 import com.example.client.Models.ProductPost;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 
-public class Controller {
+public class ProductTableView {
     ObservableList<Product> products = FXCollections.observableArrayList();
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     private Button Refresh;
@@ -41,6 +43,10 @@ public class Controller {
 
     @FXML
     private Button Delete;
+
+    @FXML
+    private Button Producer;
+
 
     @FXML
     private TableColumn<Product, String> Defect;
@@ -71,8 +77,6 @@ public class Controller {
     @FXML
     private TextField secondDate;
 
-    @FXML
-    private Button Send;
 
     @FXML
     private TableView<Product> Table = new TableView<Product>(products);
@@ -102,13 +106,20 @@ public class Controller {
     }
 
     @FXML
-    void btnSendClick(ActionEvent event) {
-
+    void ClickOnProducersBtn(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("producer-table-view.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
-    void btnUpdateClick(ActionEvent event) {
-
+    void btnUpdateClick(ActionEvent event) throws Exception {
+        int id = Table.getSelectionModel().getSelectedItem().id;
+        ProductPost product = new ProductPost(name.getText(),Integer.valueOf(amount.getText()),
+                firstDate.getText(),secondDate.getText(),decription.getText(), defect.getText());
+        SendPut(product, id);
     }
 
 
@@ -184,4 +195,25 @@ public class Controller {
         Product[] myResponse = gson.fromJson(String.valueOf(response), Product[].class);
         products.addAll(myResponse);
         }
+
+    public void SendPut(ProductPost product, int id) throws Exception {
+        URL url = new URL("http://localhost:3307/products/"+id);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+        OutputStream os = con.getOutputStream();
+        os.write(new Gson().toJson(product).getBytes());
+        os.flush();
+        os.close();
+        InputStream is = con.getInputStream();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            response.append(line);
+        }
+        rd.close();
+        System.out.println(response);
+    }
 }

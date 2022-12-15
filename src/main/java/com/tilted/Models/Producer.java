@@ -16,6 +16,7 @@ public class Producer {
     @SequenceGenerator(name = "my_entity_seq_gen", sequenceName = "catalog_seq")
     public int Id;
     public String Name;
+    public String Place;
     @ManyToMany(mappedBy = "producers")
     private List<Product> products;
 }
